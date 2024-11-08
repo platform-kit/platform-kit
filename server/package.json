@@ -1,0 +1,30 @@
+{
+  "name": "server",
+  "version": "1.0.0",
+  "main": "index.js",
+  "scripts": {
+    "start": "nodemon index.mjs --watch ../functions ../.workspace/functions",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "James Hunter Carter",
+  "license": "UNLICENSED",
+  "bin": {
+    "cli": "./cli/bin/run.js"
+  },
+  "description": "",
+  "dependencies": {
+    "@devmade/express-hot-reload": "^1.0.5",
+    "@sentry/node": "^8.12.0",
+    "@sentry/profiling-node": "^8.12.0",
+    "body-parser": "^1.20.2",
+    "convert-lambda-to-express": "^1.3.1",
+    "express": "^5.0.1",
+    "express-rate-limit": "^7.4.1",
+    "https": "^1.0.0",
+    "winston": "^3.13.1",
+    "ws": "^8.18.0"
+  },
+  "devDependencies": {
+    "http-proxy-middleware": "^3.0.3"
+  }
+}

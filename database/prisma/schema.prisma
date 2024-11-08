@@ -1,0 +1,258 @@
+datasource db {
+  provider          = "postgresql"
+  url               = env("DATABASE_URL")
+  shadowDatabaseUrl = env("SHADOW_DATABASE_URL")
+  directUrl         = env("DIRECT_DATABASE_URL")
+}
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+model User {
+  id             Int           @id @default(autoincrement())
+  uuidv4         String?       @unique
+  createdAt      DateTime      @default(now())
+  updatedAt      DateTime      @default(now())
+  email          String        @unique
+  name           String?
+  role           Role          @default(USER)
+  posts          Post[]
+  voices         Voice[]
+  voiceSamples   VoiceSample[]
+  voiceOutputs   VoiceOutput[]
+  apiCalls       ApiCall[]
+  stripeId       String?
+  subscriptionId String?
+  permissions    String[]
+  uploads        Upload[]
+  json           Json?
+  workspaces     Workspace[]
+  invitations    Invitation[]
+  reactions      Reaction[]
+  Export         Export[]
+  Version        Version[]
+}
+
+model AuthCode {
+  id        Int       @id @default(autoincrement())
+  createdAt DateTime  @default(now())
+  updatedAt DateTime  @default(now())
+  usedAt    DateTime?
+  attempts  Int?
+  revoked   Boolean?
+  email     String
+  code      String
+  token     String?
+}
+
+model Workspace {
+  id          Int          @id @default(autoincrement())
+  uuidv4      String       @unique
+  createdAt   DateTime     @default(now())
+  updatedAt   DateTime     @default(now())
+  deleted     Boolean      @default(false)
+  title       String
+  author      User?        @relation(fields: [authorId], references: [id])
+  authorId    Int?
+  color       String?
+  invitations Invitation[]
+  posts       Post[]
+  Voice       Voice?       @relation(fields: [voiceId], references: [id])
+  voiceId     Int?
+
+  @@unique(fields: [authorId, uuidv4], name: "uniqueAuthorUuid")
+}
+
+model Invitation {
+  id          Int        @id @default(autoincrement())
+  createdAt   DateTime   @default(now())
+  updatedAt   DateTime   @default(now())
+  email       String
+  user        User?      @relation(fields: [userId], references: [id])
+  workspaceId Int?
+  workspace   Workspace? @relation(fields: [workspaceId], references: [id])
+  postId      Int?
+  post        Post?      @relation(fields: [postId], references: [id])
+  userId      Int?
+  type        String?    @unique
+  role        String?
+}
+
+model Export {
+  id        Int      @id @default(autoincrement())
+  uuidv4    String   @unique
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  published Boolean  @default(false)
+  author    User?    @relation(fields: [authorId], references: [id])
+  authorId  Int?
+  post      Post?    @relation(fields: [postId], references: [id])
+  postId    Int?
+  text      String?
+  imageUrl  String?
+  base64    String?
+}
+
+model Version {
+  id        Int      @id @default(autoincrement())
+  uuidv4    String   @unique
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  published Boolean  @default(false)
+  author    User?    @relation(fields: [authorId], references: [id])
+  authorId  Int?
+  post      Post?    @relation(fields: [postId], references: [id])
+  postId    Int?
+  text      String?
+  imageUrl  String?
+  base64    String?
+}
+
+model Post {
+  id          Int          @id @default(autoincrement())
+  uuidv4      String       @unique
+  createdAt   DateTime     @default(now())
+  updatedAt   DateTime     @updatedAt
+  published   Boolean      @default(false)
+  title       String       @db.VarChar(9999)
+  author      User?        @relation(fields: [authorId], references: [id])
+  authorId    Int?
+  imageUrl    String?
+  fileData    Bytes?       @db.ByteA
+  base64      String?
+  text        String?
+  model       String?
+  metadata    Json?
+  type        String?
+  status      String?
+  workspace   Workspace?   @relation(fields: [workspaceId], references: [id])
+  workspaceId Int?
+  reactions   Reaction[]
+  invitations Invitation[]
+  exports     Export[]
+  Versions    Version[]
+  voiceId     Int?
+  Voice       Voice?       @relation(fields: [voiceId], references: [id])
+}
+
+model Reaction {
+  id        Int        @id @default(autoincrement())
+  uuidv4    String     @unique
+  createdAt DateTime   @default(now())
+  updatedAt DateTime   @updatedAt
+  published Boolean    @default(false)
+  thread    String?
+  author    User?      @relation(fields: [authorId], references: [id])
+  authorId  Int?
+  content   String?
+  metadata  Json?
+  type      String?
+  parentId  Int?
+  parent    Reaction?  @relation("ReactionParentChildren", fields: [parentId], references: [id])
+  children  Reaction[] @relation("ReactionParentChildren")
+  postId    Int?
+  post      Post?      @relation(fields: [postId], references: [id])
+}
+
+model Webhook {
+  id        Int      @id @default(autoincrement())
+  uuidv4    String   @unique
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  title     String   @db.VarChar(999)
+  url       String?
+  text      String?
+  binary    Bytes?   @db.ByteA
+  json      Json?
+  metadata  Json?
+  type      String?
+}
+
+model Upload {
+  id        Int      @id @default(autoincrement())
+  uuidv4    String   @unique
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  title     String   @db.VarChar(999)
+  author    User?    @relation(fields: [authorId], references: [id])
+  authorId  Int?
+  imageUrl  String?
+  imageData Bytes?   @db.ByteA
+  metadata  Json?
+  type      String?
+  fileName  String?
+}
+
+model Voice {
+  id         Int           @id @default(autoincrement())
+  uuidv4     String        @unique
+  createdAt  DateTime      @default(now())
+  updatedAt  DateTime      @updatedAt
+  deletedAt  DateTime?     
+  proVoiceAt DateTime?     @default(now())  
+  proVoiceId String?       
+  published  Boolean       @default(false)
+  title      String        @db.VarChar(999)
+  author     User?         @relation(fields: [authorId], references: [id])
+  authorId   Int?
+  users      String[]
+  base64     String?
+  binary     Bytes?        @db.ByteA
+  outputs    VoiceOutput[]
+  metadata   Json?
+  type       String?
+  posts      Post[]
+  workspaces Workspace[]
+}
+
+model VoiceSample {
+  id        Int      @id @default(autoincrement())
+  uuidv4    String   @unique
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  published Boolean  @default(false)
+  title     String   @db.VarChar(999)
+  author    User?    @relation(fields: [authorId], references: [id])
+  authorId  Int?
+  metadata  Json?
+  type      String?
+}
+
+model VoiceOutput {
+  id        Int      @id @default(autoincrement())
+  uuidv4    String   @unique
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  published Boolean  @default(false)
+  title     String   @db.VarChar(999)
+  author    User?    @relation(fields: [authorId], references: [id])
+  authorId  Int?
+  raw       Bytes?
+  string    String?
+  voiceId   Int?
+  voice     Voice?   @relation(fields: [voiceId], references: [id])
+  metadata  Json?
+  type      String?
+}
+
+model ApiCall {
+  id              Int      @id @default(autoincrement())
+  createdAt       DateTime @default(now())
+  updatedAt       DateTime @default(now())
+  endpoint        String
+  text            String?
+  raw             Bytes?
+  data            Json?
+  cost_usd        Float?
+  compute_seconds Float?
+  charged         Boolean? @default(true)
+  stripeData      Json?
+  userId          Int?
+  user            User?    @relation(fields: [userId], references: [id])
+}
+
+enum Role {
+  USER
+  ADMIN
+}

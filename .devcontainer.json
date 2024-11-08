@@ -1,0 +1,32 @@
+{
+  "image": "mcr.microsoft.com/devcontainers/typescript-node:22",
+  "containerEnv": {
+    "DEV_ENVIRONMENT": "devcontainer",
+  },
+  "postStartCommand": "npm install;",
+  "customizations": {
+    "vscode": {
+      "extensions": [
+        "Vue.vscode-typescript-vue-plugin",
+        "Vue.volar",
+        "Nuxtr.nuxt-vscode-extentions",
+        "streetsidesoftware.code-spell-checker",
+        "esbenp.prettier-vscode",
+        "Continue.continue",        
+        "GitHub.github-vscode-theme",
+        "NarasimaPandiyan.jetbrainsmono",
+        "mubaidr.vuejs-extension-pack",
+        "octref.vetur"
+      ]
+    }
+  },
+  "appPort": [
+    443,
+    3000,
+    3001,
+    3080,
+    8000,
+    8888,
+    24678
+  ]
+}

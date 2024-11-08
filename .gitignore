@@ -1,0 +1,27 @@
+# ENV
+.env
+.env.*
+
+# Certs
+keys/private.pem
+keys/public.pem
+keys/cert.pem
+
+# Node Modules
+node_modules
+ui/node_module
+functions/*/node_modules
+
+# Database
+database/drizzle/*
+!database/drizzle/database.config.js
+
+# Supabase
+supabase
+.DS_Store
+
+# Workspace
+.workspace/*
+
+# Various
+.DS_Store

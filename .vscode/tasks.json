@@ -1,0 +1,62 @@
+{
+  "version": "2.0.0",
+  "tasks": [
+    {
+      "label": "Install",
+      "type": "shell",
+      "command": "npm i;",
+      "windows": {
+        "command": "npm i;"
+      },
+      "group": "none",
+      "presentation": {
+        "reveal": "always",
+        "panel": "new"
+      },
+      "runOptions": {
+        "runOn": "folderOpen",
+      }
+    },
+    {
+      "label": "Start DevContainer",
+      "type": "shell",
+      "command": "npm run start-devcontainer;",
+      "windows": {
+        "command": "npm run start-devcontainer;"
+      },
+      "group": "none",
+      "presentation": {
+        "reveal": "always",
+        "panel": "new"
+      },
+      "runOptions": {
+        "runOn": "folderOpen",
+      },
+      "dependsOrder": "sequence",
+      "dependsOn": [
+        "Install",                
+      ],
+    },
+    {
+      "label": "Start Browser",
+      "type": "shell",
+      "command": "npm run start-browser;",
+      "windows": {
+        "command": "npm run start-browser;"
+      },
+      "group": "none",
+      "presentation": {
+        "reveal": "never",
+        "panel": "new"
+      },
+      "runOptions": {
+        "runOn": "folderOpen",
+      },
+      "dependsOrder": "sequence",
+      "dependsOn": [
+        "Install",        
+        "Start DevContainer"        
+      ],
+    },
+  ]
+}

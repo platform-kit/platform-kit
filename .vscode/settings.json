@@ -1,0 +1,15 @@
+{
+  "[typescript]": {
+    "editor.defaultFormatter": "esbenp.prettier-vscode"
+  },
+  /* Code Editor */
+  "editor.fontFamily": "JetBrains Mono Light, monospace",
+  "editor.fontSize": 14,
+  "editor.fontLigatures": true,
+  "editor.letterSpacing": 0.4,
+  "editor.smoothScrolling": true,
+  /* Terminal */
+  "terminal.integrated.fontFamily": "JetBrains Mono Light, monospace",
+  "terminal.integrated.fontSize": 14,
+  "terminal.integrated.defaultProfile.osx": "zsh",  
+}
