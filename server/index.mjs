@@ -12,7 +12,6 @@ import { nodeProfilingIntegration } from "@sentry/profiling-node";
 import * as winston from 'winston'
 import { rateLimit } from 'express-rate-limit'
 import { createProxyMiddleware } from 'http-proxy-middleware';
-import { hotReloadMiddleware } from "@devmade/express-hot-reload";
 import { existsSync } from 'node:fs';
 
 dotenv.config({ path: path.resolve(process.cwd() + "../../.env") });
@@ -123,8 +122,6 @@ if (process.env.DEV_ENVIRONMENT == 'devcontainer') {
 
   });
   app.use('/', apiProxy);
-
-
 
 }
 
