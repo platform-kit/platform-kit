@@ -12,6 +12,8 @@ import { nodeProfilingIntegration } from "@sentry/profiling-node";
 import * as winston from 'winston'
 import { rateLimit } from 'express-rate-limit'
 import { createProxyMiddleware } from 'http-proxy-middleware';
+import { hotReloadMiddleware } from "@devmade/express-hot-reload";
+
 import { existsSync } from 'node:fs';
 
 dotenv.config({ path: path.resolve(process.cwd() + "../../.env") });
@@ -86,14 +88,15 @@ if (existsSync(userFunctionsPath) && userStaticPathRelative != null) {
 app.use(bodyParser());
 
 // Hot Module Reload
-if (process.env.DEV_ENVIRONMENT == 'devcontainer') {
-  var hotReloadDirectories = [docsPath]
-  if (existsSync(staticPath)) {
-    hotReloadDirectories.push(staticPath)
-  }
-  // it accepts multiple folders optionally or if none is passed it will defaults to `.src`
-  // app.use(hotReloadMiddleware({ watchFolders: hotReloadDirectories, verbose: true }));
+/*
+var hotReloadDirectories = [docsPath]
+if (existsSync(staticPath)) {
+  hotReloadDirectories.push(staticPath)
 }
+// it accepts multiple folders optionally or if none is passed it will defaults to `.src`
+app.use(hotReloadMiddleware({ watchFolders: hotReloadDirectories, verbose: true }));
+*/
+
 
 // Apply the rate limiting middleware to all requests.
 if (process.env.DEV_ENVIRONMENT != 'devcontainer') {
@@ -126,17 +129,16 @@ if (process.env.DEV_ENVIRONMENT == 'devcontainer') {
 }
 
 // Setup Static Docs Serving
-fs.readFile(docsPath + "/index.html", (err, data) => {
-  if (!err && data) {
-    console.log("\n");
-    console.log("Static docs exist in path:");
-    console.log(docsPath);
-    console.log("\n");
-    console.log(chalk.blue("Serving static docs..."));
-    console.log("\n");
-  }
+
+if (existsSync(docsPath)) {
+  console.log("\n");
+  console.log("Static docs exist in path:");
+  console.log(docsPath);
+  console.log("\n");
+  console.log(chalk.blue("Serving static docs..."));
+  console.log("\n");
   app.use("/api", express.static(docsPath));
-});
+}
 
 // Setup Static File Serving
 if (
@@ -171,8 +173,7 @@ if (functions.length > 0) {
 }
 let i = 0;
 
-var allowedFunctions = functions;
-if (typeof appConfig.default.api.whiteList == 'array') {
+if (process.env.USE_API_WHITELIST != 'false' && process.env.USE_API_WHITELIST != 'FALSE' && typeof appConfig.default.api.whiteList == 'array') {
   functions = functions.filter((fn) => appConfig.api.whiteList.includes(fn));
 }
 
@@ -226,9 +227,6 @@ if (process.env.USE_HTTPS == 'true' || process.env.USE_HTTPS == 'TRUE') {
     console.log(chalk.gray("Listening on port 8000"));
     console.log("\n");
   });
-
-  // httpsServer.on('upgrade', wsProxy.upgrade); // <-- subscribe to http 'upgrade'
-  // app.on('upgrade', wsProxy.upgrade); // <-- subscribe to http 'upgrade'
 
 }
 else {
