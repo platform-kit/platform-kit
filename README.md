@@ -11,8 +11,6 @@ PlatformKit is an opinionated Node.js framework for building SaaS applications.
 
 <img src='https://img.shields.io/badge/Puppeteer%20-fff?style=for-the-badge&logo=Puppeteer&logoColor=333'/>
 
-<img src='https://img.shields.io/badge/Puppeteer%20-fff?style=for-the-badge&logo=Puppeteer&logoColor=333'/>
-
 
 **Front End** 
 <br/>
