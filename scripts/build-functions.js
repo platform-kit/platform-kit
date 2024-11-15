@@ -24,10 +24,10 @@ var commands = [];
 
 var __dirname = path.resolve(process.cwd());
 var functionsPath = path.resolve(__dirname + "/functions");
-var userFunctionsPath = path.resolve(__dirname + "/.workspace/repo/functions");
-var tempFunctionsPath = path.resolve(__dirname + "/.functions");
+var relativeFunctionsPath = process.env.FUNCTIONS_PATH || 'functions';
+var userFunctionsPath = path.resolve(__dirname + "/.workspace/repo/" + relativeFunctionsPath);
 
-function buildCommand(input) {
+function buildCommand(input, functionsPath) {
   if ((['true', 'TRUE'].includes(process.env.USE_API_WHITELIST) && typeof appConfig.api.whiteList == 'array') || ['true', 'TRUE'].includes(process.env.USE_API_WHITELIST) == false) {
 
     if (typeof appConfig.api.whiteList == 'array' && appConfig.api.whiteList.length > 0) {
@@ -35,27 +35,24 @@ function buildCommand(input) {
     }
 
     var command =
-      "echo '\n\ninstalling /functions/" +
+      "echo '\n\ninstalling /" + functionsPath + '/' +
       input +
       "'; " +
-      "cd .functions/" +
+      "cd " + functionsPath + '/' +
       input +
       "; npm i  --no-optional --quiet;";
-    port = port + 1;
     commands.push(command);
   }
 }
 
 commands.push("cd server; npm i --no-optional --quiet;");
-functions.forEach((element) => buildCommand(element));
-
-
+functions.forEach((element) => buildCommand(element, functionsPath));
 
 
 if (fs.existsSync(userFunctionsPath)) {
   console.log("Loading user functions from... " + userFunctionsPath)
   var userFunctions = fs.readdirSync(userFunctionsPath, null);
-  userFunctions.forEach((element) => buildCommand(element));
+  userFunctions.forEach((element) => buildCommand(element, userFunctionsPath));
 }
 
 
