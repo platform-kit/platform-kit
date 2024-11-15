@@ -1,98 +1,57 @@
 # PlatformKit
 
-## Commands
+PlatformKit is an opinionated Node.js framework for building SaaS applications.
 
-### Installation
+**Dev Tools**
+<br/>
 
-### ✅ `npm run preinstall`
+<img src='https://img.shields.io/badge/VS%20Code-fff?style=for-the-badge&logo=editorconfig&logoColor=333'>
 
-Shell script that installs `nvm` and switches to specified Node version (default: 22) before running `npm install`.
+<img src='https://img.shields.io/badge/prettier-fff?style=for-the-badge&logo=prettier&logoColor=333'/>
 
-### ✅ `npm install`
+<img src='https://img.shields.io/badge/Puppeteer%20-fff?style=for-the-badge&logo=Puppeteer&logoColor=333'/>
 
-Installs all dependencies.
-
-### ✅ `npm run install-devcontainer`
-
-Runs installation script specifically for use inside devcontainer.
-
-### ✅ `npm run install-cli`
-
-Installs and builds OCLIF CLI in `/cli`.
-
-### ✅ `npm run install-server`
-
-Installs and builds Express server in `/server`.
-
-### ✅ `npm run install-cli`
-
-Installs and builds CLI.
-
-### ✅ `npm run install-devpod`
-
-Installs Devpod.
-
-### ✅ `npm run install-supabase`
-
-Installs Supabase.
-
-### ✅ `npm run uninstall-supabase`
-
-Uninstalls Supabase.
-
----
-
-### Develop
-
-### ✅ `npm run dev`
-
-Starts Express server serving the API endpoints in `functions` AND the static site generator in `ui`.
-
-### ✅ `npm run dev-api`
-
-Starts Express server serving only the API endpoints in `functions`.
-
-### ✅ `npm run dev-ui`
-
-Starts static site generator in `ui`.
+<img src='https://img.shields.io/badge/Puppeteer%20-fff?style=for-the-badge&logo=Puppeteer&logoColor=333'/>
 
 
----
+**Front End** 
+<br/>
 
-### Build
+<img src='https://img.shields.io/badge/Vite-222?style=for-the-badge&logo=vite&logoColor=666'>
 
-### ✅ `npm run build-cli`
+<img src='https://img.shields.io/badge/Vue%20js-222?style=for-the-badge&logo=vuedotjs&logoColor=666'/>
 
-Builds OCLIF CLI.
+<img src='https://img.shields.io/badge/nuxt%20js-222?style=for-the-badge&logo=nuxtdotjs&logoColor=666'/>
 
-### ✅ `npm run api-spec`
+<img src='https://img.shields.io/badge/Bootstrap-222?style=for-the-badge&logo=bootstrap&logoColor=666'/>
 
-Generates OpenAPI specification from Zod files in `functions`.
 
-### ✅ `npm run api`
+**Back End**
+<br/>
 
-Builds Express app.
+<img src='https://img.shields.io/badge/Node%20js-111?style=for-the-badge&logo=nodedotjs&logoColor=666'/>
 
-### ✅ `npm run build-functions`
+<img src='https://img.shields.io/badge/Express%20js-111?style=for-the-badge&logo=express&logoColor=666'/>
 
-Builds each individual function in `functions.`
+<img src='https://img.shields.io/badge/Zod-111?style=for-the-badge&logo=zod&logoColor=666'/>
 
-### ✅ `npm run build-ui`
+<img src='https://img.shields.io/badge/Supabase-111?style=for-the-badge&logo=supabase&logoColor=666'/>
 
-Builds the UI in `ui`.
+<img src='https://img.shields.io/badge/Prisma-111?style=for-the-badge&logo=Prisma&logoColor=666'/>
 
-### ✅ `npm run build-keys`
+<img src='https://img.shields.io/badge/JWT-111?style=for-the-badge&logo=JSON%20web%20tokens&logoColor=666'/>
+ 
+<img src='https://img.shields.io/badge/GIT-111?style=for-the-badge&logo=git&logoColor=666'/>
 
-Builds the security keys in `keys`.
+<img src='https://img.shields.io/badge/Markdown-111?style=for-the-badge&logo=markdown&logoColor=666'/>
 
-### ✅ `npm run build-docker`
+<img src='https://img.shields.io/badge/Docker-111?style=for-the-badge&logo=docker&logoColor=666'/>
 
-Builds Docker image for production deployment.
+<img src='https://img.shields.io/badge/posthog-111?style=for-the-badge&logo=posthog&logoColor=666'/>
 
----
+<img src='https://img.shields.io/badge/Sentry-111?style=for-the-badge&logo=Sentry&logoColor=666'/>
+ 
+## Documentation
 
-### Serve
-
-### ✅ `npm run serve`
-
-Serves the UI in `ui` and the API endpoints in `functions` as `/api/{function}`.
+- [Quick Start](/docs/quick-start.md)
+- [Commmands](/docs/commands.md)

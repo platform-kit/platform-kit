@@ -1,7 +1,6 @@
 import { addToDevServer, startDevServer, wrapLambda } from "convert-lambda-to-express";
 import express from "express";
 import https from 'https';
-import bodyParser from "body-parser";
 import fs from "fs";
 import * as path from "path";
 import * as dotenv from "dotenv";
@@ -13,7 +12,6 @@ import * as winston from 'winston'
 import { rateLimit } from 'express-rate-limit'
 import { createProxyMiddleware } from 'http-proxy-middleware';
 import { hotReloadMiddleware } from "@devmade/express-hot-reload";
-
 import { existsSync } from 'node:fs';
 
 dotenv.config({ path: path.resolve(process.cwd() + "../../.env") });
@@ -85,7 +83,6 @@ if (existsSync(userFunctionsPath) && userStaticPathRelative != null) {
   hotReloadDirectories.push(userStaticPath)
   console.log("and " + userStaticPath)
 }
-app.use(bodyParser());
 
 // Hot Module Reload
 /*

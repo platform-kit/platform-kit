@@ -62,4 +62,4 @@ var output = {
 
 module.exports = output;
 
-console.log(output)
+// console.log(output)

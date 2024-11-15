@@ -10,6 +10,14 @@ import * as yaml from "yaml";
 import * as fs from "fs";
 import * as path from "path";
 import * as dotenv from "dotenv";
+import { existsSync } from 'node:fs';
+import * as lib  from '../lib/index.mjs';
+import { exit } from "process";
+
+console.log(lib.lib.functions.hasUserFunctions());
+process.exit(1);
+
+
 
 // Load ENV variables
 dotenv.config({ path: path.resolve(process.cwd() + "/.env") });
@@ -27,7 +35,12 @@ const bearerAuth = registry.registerComponent("securitySchemes", "bearerAuth", {
 // Generate Schema
 var __dirname = path.resolve(process.cwd());
 var functionPath = path.resolve(__dirname + "/functions");
-const functions = fs.readdirSync(functionPath, null);
+var userFunctionsPath = path.resolve(__dirname + "/.workspace/repo/functions");
+var functions = fs.readdirSync(functionPath, null);
+if (existsSync(userFunctionsPath)) {
+  console.log("Loading user functions from... " + userFunctionsPath)
+  var userFunctions = fs.readdirSync(userFunctionsPath, null);
+}
 
 var apiPaths = [];
 
@@ -35,12 +48,12 @@ function capitalizeFirstLetter(string) {
   return string.charAt(0).toUpperCase() + string.slice(1);
 }
 
-async function loadSchema(directory) {
+async function loadSchema(directory, functionPath) {
   if (fs.existsSync(functionPath + "/" + directory + "/schema/schema.mjs")) {
     var schemaPath = functionPath + "/" + directory + "/schema/schema.mjs";
     console.log("\n");
     console.log("Schema Exists: " + schemaPath);
-    
+
     const schema = await import(schemaPath);
     var urlPath = "/" + directory;
     var verbs = ["post"];
@@ -117,8 +130,17 @@ async function loadSchema(directory) {
 }
 
 for (const fn of functions) {
-  await loadSchema(fn);
+  await loadSchema(fn, functionPath);
 }
+
+
+if (userFunctions != null && userFunctions.length > 0) {
+  for (const fn of userFunctions) {
+    await loadSchema(fn, userFunctionsPath);
+  }
+}
+
+
 
 function getOpenApiDocumentation() {
   const generator = new OpenApiGeneratorV3(registry.definitions);
@@ -131,7 +153,7 @@ function getOpenApiDocumentation() {
 
   var urlPrefix = 'api';
 
-  if(process.env.BASE_URL != null && process.env.ENVIRONMENT == 'production') {
+  if (process.env.BASE_URL != null && process.env.ENVIRONMENT == 'production') {
     urlPrefix = process.env.BASE_URL + '/api';
   }
 
